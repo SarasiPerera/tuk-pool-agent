@@ -34,8 +34,8 @@ import random
 MAX_CAPACITY = 3
 MAX_WAIT_BUCKET = 8  # minutes, capped
 FARE_FOR_GROUP_SIZE = {1: 120, 2: 60, 3: 40}
-WAIT_TICK_BASE = 3       # base cost of waiting one more minute
-WAIT_TICK_GROWTH = 4     # extra cost per minute already waited (growing impatience)
+WAIT_TICK_BASE = 15      # base cost of waiting one more minute
+WAIT_TICK_GROWTH = 20    # extra cost per minute already waited (growing impatience)
 
 
 class DispatchCoordinator:
