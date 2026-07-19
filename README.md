@@ -2,7 +2,7 @@
 
 A live ride-pooling app for the USJ → Wijerama tuk route. Solo fare is
 Rs 120; if students share, the fare splits evenly (Rs 60 for 2, Rs 40
-for 3 — max capacity of a three-wheeler).
+for 3 - max capacity of a three-wheeler).
 
 ## The multi-agent / joint action framing
 
