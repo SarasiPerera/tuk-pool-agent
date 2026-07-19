@@ -12,7 +12,7 @@ for 3 — max capacity of a three-wheeler).
   decision: for the whole group currently waiting, should it **dispatch
   now** or **hold a bit longer** hoping another student joins and the
   fare splits further? That decision applies jointly to everyone in the
-  queue at that moment — one action, shared consequence across multiple
+  queue at that moment : one action, shared consequence across multiple
   agents, which is exactly what "joint action" means in a multi-agent
   system.
 - Rather than hand-coding a fixed rule ("always wait for 3"), this
@@ -20,13 +20,13 @@ for 3 — max capacity of a three-wheeler).
   random-arrival process. The reward trades off:
   - cheaper fare for a bigger group, vs.
   - a **growing impatience cost** the longer people are made to wait
-    (see `coordinator.py` for the exact reward shaping — this was the
+    (see `coordinator.py` for the exact reward shaping - this was the
     key design decision: without an ongoing cost of waiting, the
     learned policy just hoards for a full tuk forever, which isn't
     realistic).
 - The result is a genuine threshold policy: e.g. with 2 people waiting,
   it holds for a while hoping for a 3rd, but gives up and dispatches
-  sooner than it would for 1 person waiting — because the marginal
+  sooner than it would for 1 person waiting - because the marginal
   saving (60 → 40) is smaller than the saving of going from 1 → 2
   (120 → 60).
 
@@ -50,12 +50,12 @@ pip install -r requirements.txt
 uvicorn main:app --reload --port 8000
 ```
 
-Then open **http://localhost:8000** — frontend and API are served from
+Then open **http://localhost:8000** - frontend and API are served from
 the same app, one URL, no separate frontend server needed.
 
 ## Deploying it (for usability testing with real students)
 
-Vercel isn't a good fit here — its serverless functions are stateless
+Vercel isn't a good fit here - its serverless functions are stateless
 and short-lived, and this app needs a persistent in-memory queue plus
 a background loop that ticks every 15 seconds. Serverless platforms
 generally can't do that (queues/background processing = "serverless is
@@ -73,7 +73,7 @@ process, exactly like running it locally, just on a public URL.
    - **Build command:** `pip install -r requirements.txt`
    - **Start command:** `uvicorn main:app --host 0.0.0.0 --port $PORT`
      (Render auto-detects the `Procfile` too, so this is usually filled in for you.)
-4. Deploy. You'll get a URL like `https://your-app-name.onrender.com` —
+4. Deploy. You'll get a URL like `https://your-app-name.onrender.com` -
    share that directly with students for usability testing.
 
 **Free tier heads-up:** Render's free web services spin down after a
@@ -86,10 +86,10 @@ production app people rely on daily.
 
 - `MAX_CAPACITY = 3` — tuk seats
 - `FARE_FOR_GROUP_SIZE = {1: 120, 2: 60, 3: 40}`
-- `WAIT_TICK_BASE` / `WAIT_TICK_GROWTH` — control how quickly impatience
+- `WAIT_TICK_BASE` / `WAIT_TICK_GROWTH` - control how quickly impatience
   grows the longer people wait; tune these and re-run the sanity check
   below to see the policy shift.
-- `HARD_WAIT_CAP_MINUTES` (in `queue_manager.py`) — a safety net that
+- `HARD_WAIT_CAP_MINUTES` (in `queue_manager.py`) - a safety net that
   forces a dispatch after 8 minutes regardless of the learned policy,
   so no one is ever stuck waiting indefinitely if the policy is wrong
   in some edge case.
@@ -113,6 +113,6 @@ for n in range(MAX_CAPACITY + 1):
 - Add a second route/direction (e.g. Wijerama → USJ mornings) as a
   second coordinator instance.
 - This is a natural stepping stone toward the mode-choice app (bus vs.
-  tuk vs. walk) you built earlier — you could combine them so the
+  tuk vs. walk) you built earlier - you could combine them so the
   "tuk" option in that system is actually powered by this live pooling
   logic instead of a flat simulated fare.
