@@ -157,7 +157,6 @@
     <input type="text" id="name" placeholder="Your name" required />
     <button type="submit">Request a tuk</button>
   </form>
-  <p class="hint">Demoing solo? Use "Simulate another student" below to fill the queue without needing classmates online.</p>
 
   <div class="status-card" id="status-card">
     <div class="status-label" id="status-label">—</div>
@@ -166,7 +165,6 @@
 
   <h2>Live queue</h2>
   <div id="queue-list"></div>
-  <button class="secondary" id="simulate-btn" style="margin-top:6px;">+ Simulate another student</button>
 
   <h2>Recent dispatches</h2>
   <div id="dispatch-list"></div>
@@ -192,11 +190,6 @@ document.getElementById('request-form').addEventListener('submit', async (e) => 
 
   document.getElementById('status-card').style.display = 'block';
   startPolling();
-});
-
-document.getElementById('simulate-btn').addEventListener('click', async () => {
-  await fetch(`${API}/admin/simulate`, {method: 'POST'});
-  refreshQueue();
 });
 
 function startPolling() {

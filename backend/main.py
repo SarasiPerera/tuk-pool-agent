@@ -60,11 +60,5 @@ def admin_queue():
     return manager.admin_snapshot()
 
 
-@app.post("/api/admin/simulate")
-def admin_simulate():
-    entry = manager.simulate_student()
-    return {"id": entry["id"], "name": entry["name"]}
-
-
 # Serve the frontend last, so it doesn't shadow the /api routes above.
 app.mount("/", StaticFiles(directory="static", html=True), name="static")
