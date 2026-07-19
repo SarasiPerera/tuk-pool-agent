@@ -12,13 +12,13 @@ import time
 import uuid
 from coordinator import DispatchCoordinator, MAX_CAPACITY, FARE_FOR_GROUP_SIZE
 
-HARD_WAIT_CAP_MINUTES = 8  # safety net: never make anyone wait longer than this
+HARD_WAIT_CAP_MINUTES = 4  # safety net: never make anyone wait longer than this
 
 
 class QueueManager:
     def __init__(self):
         self.coordinator = DispatchCoordinator()
-        self.coordinator.train(episodes=40000)
+        self.coordinator.train(episodes=50000)
 
         self.queue = []          # list of dicts: {id, name, join_time}
         self.dispatch_log = []   # recent dispatches, for the demo dashboard
