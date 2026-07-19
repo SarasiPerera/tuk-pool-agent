@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>USJ → Wijerama · Tuk Pooling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F151C;
+    --card:#1A222B;
+    --card-border:#2A3541;
+    --accent:#E8A33D;
+    --accent-soft:#3A3223;
+    --teal:#4FD1C5;
+    --text:#EDEFF2;
+    --muted:#8B97A6;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+    padding:40px 20px 80px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--teal);
+    margin-bottom:10px;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:clamp(26px,4vw,38px);
+    font-weight:700;
+    margin:0 0 8px;
+    line-height:1.15;
+  }
+  .sub{color:var(--muted);font-size:14px;max-width:520px;margin-bottom:32px;}
+
+  .fare-strip{
+    display:flex;
+    gap:10px;
+    margin-bottom:32px;
+  }
+  .fare-chip{
+    flex:1;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    padding:14px;
+    text-align:center;
+  }
+  .fare-chip .n{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+  .fare-chip .rs{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:20px;margin-top:4px;}
+  .fare-chip.highlight{border-color:var(--accent);}
+
+  form{display:flex;gap:10px;margin-bottom:8px;}
+  input[type=text]{
+    flex:1;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:8px;
+    padding:14px 16px;
+    color:var(--text);
+    font-size:14px;
+  }
+  input[type=text]:focus{outline:2px solid var(--teal);outline-offset:1px;}
+  button{
+    background:var(--accent);
+    color:#1A1204;
+    border:none;
+    border-radius:8px;
+    padding:0 20px;
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+  }
+  button:hover{filter:brightness(1.08);}
+  button.secondary{
+    background:transparent;
+    border:1px solid var(--card-border);
+    color:var(--muted);
+    font-weight:500;
+  }
+  .hint{color:var(--muted);font-size:12px;margin-bottom:30px;}
+
+  .status-card{
+    display:none;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:12px;
+    padding:22px 24px;
+    margin-bottom:30px;
+  }
+  .status-card.waiting{border-color:var(--card-border);}
+  .status-card.matched{border-color:var(--accent);}
+  .status-label{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;margin-bottom:6px;}
+  .status-detail{color:var(--muted);font-size:13px;}
+  .fare-highlight{
+    font-family:'JetBrains Mono',monospace;
+    font-size:26px;
+    color:var(--accent);
+    margin-top:10px;
+  }
+
+  h2{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:16px;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    margin:36px 0 12px;
+  }
+  .queue-row{
+    display:flex;
+    justify-content:space-between;
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:8px;
+    padding:12px 16px;
+    margin-bottom:8px;
+    font-size:13px;
+  }
+  .queue-row .wait{color:var(--muted);font-family:'JetBrains Mono',monospace;}
+  .empty{color:var(--muted);font-size:13px;}
+  .dispatch-row{
+    display:flex;
+    justify-content:space-between;
+    padding:10px 16px;
+    border-bottom:1px solid var(--card-border);
+    font-size:13px;
+  }
+  .dispatch-row .fare{color:var(--accent);font-family:'JetBrains Mono',monospace;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="eyebrow">Multi-agent · Joint Dispatch Demo</div>
+  <h1>USJ → Wijerama<br>Shared Tuk Pooling</h1>
+  <p class="sub">Request a tuk. If others are heading the same way around now, a coordinator agent decides whether to group you together and split the fare — learned via Q-learning, not a fixed rule.</p>
+
+  <div class="fare-strip">
+    <div class="fare-chip"><div class="n">Solo</div><div class="rs">Rs 120</div></div>
+    <div class="fare-chip"><div class="n">2 sharing</div><div class="rs">Rs 60</div></div>
+    <div class="fare-chip highlight"><div class="n">3 sharing</div><div class="rs">Rs 40</div></div>
+  </div>
+
+  <form id="request-form">
+    <input type="text" id="name" placeholder="Your name" required />
+    <button type="submit">Request a tuk</button>
+  </form>
+  <p class="hint">Demoing solo? Use "Simulate another student" below to fill the queue without needing classmates online.</p>
+
+  <div class="status-card" id="status-card">
+    <div class="status-label" id="status-label">—</div>
+    <div class="status-detail" id="status-detail">—</div>
+  </div>
+
+  <h2>Live queue</h2>
+  <div id="queue-list"></div>
+  <button class="secondary" id="simulate-btn" style="margin-top:6px;">+ Simulate another student</button>
+
+  <h2>Recent dispatches</h2>
+  <div id="dispatch-list"></div>
+</div>
+
+<script>
+const API = "/api";
+let myId = null;
+let polling = null;
+
+document.getElementById('request-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  if (!name) return;
+
+  const res = await fetch(`${API}/request`, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({name})
+  });
+  const data = await res.json();
+  myId = data.id;
+
+  document.getElementById('status-card').style.display = 'block';
+  startPolling();
+});
+
+document.getElementById('simulate-btn').addEventListener('click', async () => {
+  await fetch(`${API}/admin/simulate`, {method: 'POST'});
+  refreshQueue();
+});
+
+function startPolling() {
+  if (polling) clearInterval(polling);
+  refreshStatus();
+  polling = setInterval(refreshStatus, 2500);
+}
+
+async function refreshStatus() {
+  if (!myId) return;
+  const res = await fetch(`${API}/status/${myId}`);
+  const data = await res.json();
+
+  const card = document.getElementById('status-card');
+  const label = document.getElementById('status-label');
+  const detail = document.getElementById('status-detail');
+
+  if (data.status === 'waiting') {
+    card.className = 'status-card waiting';
+    label.textContent = 'Waiting for a match…';
+    detail.textContent = `${data.num_waiting} student(s) in queue · you've waited ${data.wait_minutes} min`;
+  } else if (data.status === 'matched') {
+    card.className = 'status-card matched';
+    label.textContent = data.group_size === 1
+      ? 'No one else in time — going solo'
+      : `Matched with ${data.group_members.length - 1} other${data.group_members.length > 2 ? 's' : ''}: ${data.group_members.join(', ')}`;
+    detail.innerHTML = `Group size: ${data.group_size}<div class="fare-highlight">Rs ${data.fare_each} each</div>`;
+    clearInterval(polling);
+  }
+  refreshQueue();
+}
+
+async function refreshQueue() {
+  const res = await fetch(`${API}/admin/queue`);
+  const data = await res.json();
+
+  const queueList = document.getElementById('queue-list');
+  if (data.queue.length === 0) {
+    queueList.innerHTML = '<div class="empty">No one waiting right now.</div>';
+  } else {
+    queueList.innerHTML = data.queue.map(s =>
+      `<div class="queue-row"><span>${s.name}</span><span class="wait">${s.wait_minutes} min</span></div>`
+    ).join('');
+  }
+
+  const dispatchList = document.getElementById('dispatch-list');
+  if (data.recent_dispatches.length === 0) {
+    dispatchList.innerHTML = '<div class="empty">No dispatches yet.</div>';
+  } else {
+    dispatchList.innerHTML = data.recent_dispatches.map(d =>
+      `<div class="dispatch-row"><span>${d.time} · ${d.members.join(', ')}</span><span class="fare">Rs ${d.fare_each} each</span></div>`
+    ).join('');
+  }
+}
+
+// keep the dashboard live even before requesting a ride
+refreshQueue();
+setInterval(refreshQueue, 4000);
+</script>
+</body>
+</html>
