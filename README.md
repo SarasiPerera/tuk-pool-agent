@@ -2,10 +2,10 @@
 
 🔗 **Live app:** https://tuk-pool-agent-production.up.railway.app
 
-![demo-screenshot] 
-<img width="32%"  alt="1" src="https://github.com/user-attachments/assets/bea014ee-54b7-451b-b944-5535b6727bd5" />
-<img width="32%"  alt="2" src="https://github.com/user-attachments/assets/8531111b-4e18-47d6-b6af-d3c598fa1c56" />
-<img width="32%"  alt="3" src="https://github.com/user-attachments/assets/6587cdfc-c3c6-4be6-bfac-7797bd14d7a2" />
+**demo-screenshot** 
+<img width="30%"  alt="1" src="https://github.com/user-attachments/assets/bea014ee-54b7-451b-b944-5535b6727bd5" />
+<img width="30%"  alt="2" src="https://github.com/user-attachments/assets/8531111b-4e18-47d6-b6af-d3c598fa1c56" />
+<img width="30%"  alt="3" src="https://github.com/user-attachments/assets/6587cdfc-c3c6-4be6-bfac-7797bd14d7a2" />
 
 A live ride-pooling app for the USJ → Wijerama tuk route. Solo fare is
 Rs 120; if students share, the fare splits evenly (Rs 60 for 2, Rs 40
