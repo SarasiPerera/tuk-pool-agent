@@ -188,8 +188,10 @@ document.getElementById('request-form').addEventListener('submit', async (e) => 
   const data = await res.json();
   myId = data.id;
 
+  document.getElementById('name').value = '';   // <-- new line
   document.getElementById('status-card').style.display = 'block';
   startPolling();
+  
 });
 
 function startPolling() {
