@@ -2,7 +2,7 @@
 
 🔗 **Live app:** https://tuk-pool-agent-production.up.railway.app
 
-**Demo Screenshot** 
+**Demo Screenshots** 
 
 <img width="20%" style="margin-right:15px;" alt="1" src="https://github.com/user-attachments/assets/bea014ee-54b7-451b-b944-5535b6727bd5" />
 <img width="20%" style="margin-right:15px;" alt="2" src="https://github.com/user-attachments/assets/8531111b-4e18-47d6-b6af-d3c598fa1c56" />
